@@ -1,43 +1,32 @@
-import { expect, test } from "playwright/test"
-import { HomePage } from "../logic/pages/home-page"
-import { CartPage } from "../logic/pages/cart-page"
-import { HttpHelper } from "../logic/requests/http-helper"
-import { WishListPage } from "../logic/pages/wishlist-page"
+import { test, expect } from "./fixtures/base-fixture"
+
 
 test.describe("full flow tests - e2e ", () => {
-    let home: HomePage
 
-    test.beforeEach('setUp the HomePage', async ({ page }) => {
-        home = new HomePage(page)
-        await home.goto()
+    test.beforeEach('setUp the HomePage', async ({ homePage }) => {
+        await homePage.goto()
     })
-    test.afterEach('clear the framework', async ({ page }) => {
-        const hp = new HttpHelper(page)
-        await hp.clearWishList()
-        await hp.clearCart()
+    test.afterEach('clear the framework', async ({ httpHelper }) => {
+        await httpHelper.clearWishList()
+        await httpHelper.clearCart()
 
     })
-    test('validate user logged in', async ({ page }) => {
-        const profileName = await home.getProfileName()
-        const hp = new HttpHelper(page)
-        expect(await hp.getUserProfileName()).toContain(profileName)
+    test('validate user logged in', async ({ httpHelper, homePage }) => {
+        const profileName = await homePage.getProfileName()
+        expect(await httpHelper.getUserProfileName()).toContain(profileName)
     })
-    test("add item throgh api validate via ui - wishlist ", async ({ page }) => {
-        const api = new HttpHelper(page)
-        await api.addItemToWishList("W142310027", "2148")
-        await home.navigateToWishListPage()
-        const wishlistPage = new WishListPage(page)
+    test("add item throgh api validate via ui - wishlist ", async ({ httpHelper, homePage, wishlistPage }) => {
+        await httpHelper.addItemToWishList("W142310027", "2148")
+        await homePage.navigateToWishListPage()
         let text = await wishlistPage.getitemNameFromWishListByIndex(0)
-        expect(await api.verifyItemExistsInWishList(text))
+        expect(await httpHelper.verifyItemExistsInWishList(text))
     })
 
-    test("add item throgh api validate via ui -Cart", async ({ page }) => {
-        const api = new HttpHelper(page)
-        await api.addItemToCart("Z81883003001")
-        await home.reload()
-        await home.navigateToCartPage()
-        const cartPage = new CartPage(page)
+    test("add item throgh api validate via ui -Cart", async ({ homePage, cartPage, httpHelper }) => {
+        await httpHelper.addItemToCart("Z81883003001")
+        await homePage.reload()
+        await homePage.navigateToCartPage()
         let name = await cartPage.getItemNameFromCartByIndex(0)
-        expect(await api.verifyItemExistsInCart(name)).toBeTruthy()
+        expect(await httpHelper.verifyItemExistsInCart(name)).toBeTruthy()
     })
 })

@@ -1,39 +1,31 @@
-import { expect, test } from "@playwright/test"
-import { HomePage } from "../logic/pages/home-page"
-import { HttpHelper } from "../logic/requests/http-helper"
+import { test, expect } from "./fixtures/base-fixture"
 
 
 test.describe('Testing Terminal-X', async () => {
 
-    let home: HomePage
 
     test.describe('smoke tests api', async () => {
-        test.beforeEach('setUp the HomePage', async ({ page }) => {
-            home = new HomePage(page)
-            await home.goto()
+        test.beforeEach('setUp the HomePage', async ({ homePage }) => {
+            await homePage.goto()
         })
-        test.afterEach('clear the framework', async ({ page }) => {
-            const hp = new HttpHelper(page)
-            await hp.clearWishList()
-            await hp.clearCart()
+        test.afterEach('clear the framework', async ({ httpHelper }) => {
+            await httpHelper.clearWishList()
+            await httpHelper.clearCart()
+        })
 
+        test('add and remove - api WishList', async ({ httpHelper }) => {
+            const itemID = await httpHelper.addItemToWishList('W150580001', '4')
+            await httpHelper.removeItemFromWishList(itemID)
+            expect(await httpHelper.getWishListCount()).toBe(0)
         })
-        test('add and remove - api WishList', async ({ page }) => {
-            const hp = new HttpHelper(page)
-            const itemID = await hp.addItemToWishList('W150580001', '4')
-            await hp.removeItemFromWishList(itemID)
-            expect(await hp.getWishListCount()).toBe(0)
+        test('add and remove - api Cart', async ({ httpHelper }) => {
+            const itemID = await httpHelper.addItemToCart('W13547201504')
+            const ls = await httpHelper.getItemDetails()
+            await httpHelper.removeItemFromCart(parseInt(ls[0].id))
+            expect(await httpHelper.getCartCount()).toBe(0)
         })
-        test('add and remove - api Cart', async ({ page }) => {
-            const hp = new HttpHelper(page)
-            const itemID = await hp.addItemToCart('W13547201504')
-            const ls = await hp.getItemDetails()
-            await hp.removeItemFromCart(parseInt(ls[0].id))
-            expect(await hp.getCartCount()).toBe(0)
-        })
-        test('get Items', async ({ page }) => {
-            const hp = new HttpHelper(page)
-            expect(await hp.getAllItemsSKU("189")).not.toBeNull()
+        test('get Items', async ({ httpHelper }) => {
+            expect(await httpHelper.getAllItemsSKU("189")).not.toBeNull()
         })
     })
 

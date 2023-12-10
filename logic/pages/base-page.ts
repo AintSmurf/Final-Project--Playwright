@@ -39,4 +39,7 @@ export class BasePage {
     waitLocator = async (locator: string): Promise<void> => {
         await this.page.waitForSelector(locator)
     }
+    pause = async () => {
+        await this.page.pause()
+    }
 }

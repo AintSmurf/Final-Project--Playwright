@@ -28,7 +28,6 @@ export class ProductPage extends BasePage {
         await this.sizeSelect(size).click()
     }
 
-
     selecBrand = async (brandName: string) => {
         const brand = brandName.toLocaleUpperCase()
         await this.brandOption(brand).click()
