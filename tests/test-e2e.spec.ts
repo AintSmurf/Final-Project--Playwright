@@ -13,6 +13,7 @@ test.describe("full flow tests - e2e ", () => {
     })
     test('validate user logged in', async ({ httpHelper, homePage }) => {
         const profileName = await homePage.getProfileName()
+
         expect(await httpHelper.getUserProfileName()).toContain(profileName)
     })
     test("add item throgh api validate via ui - wishlist ", async ({ httpHelper, homePage, wishlistPage }) => {

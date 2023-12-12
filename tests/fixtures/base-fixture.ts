@@ -4,8 +4,9 @@ import { HomePage } from "../../logic/pages/home-page"
 import { CartPage } from "../../logic/pages/cart-page"
 import { WishListPage } from "../../logic/pages/wishlist-page"
 import { ProductPage } from "../../logic/pages/products-page"
+import { PageContext } from "../../logic/pages/page-context"
 
-export const test = base.extend<{ httpHelper: HttpHelper, homePage: HomePage, cartPage: CartPage, wishlistPage: WishListPage, productPage: ProductPage }>
+export const test = base.extend<{ httpHelper: HttpHelper, homePage: HomePage, cartPage: CartPage, wishlistPage: WishListPage, productPage: ProductPage, pageContext: PageContext }>
     ({
         httpHelper: async ({ page }, use) => {
             await use(new HttpHelper(page))
@@ -21,7 +22,10 @@ export const test = base.extend<{ httpHelper: HttpHelper, homePage: HomePage, ca
         },
         productPage: async ({ page }, use) => {
             await use(new ProductPage(page))
-        }
+        },
+        pageContext: async ({ page }, use) => {
+            await use(new PageContext(page))
+        },
     })
 export { expect } from '@playwright/test';
 
