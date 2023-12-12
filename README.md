@@ -14,7 +14,7 @@ Before you begin, ensure you have met the following requirements:
 * node.js installed
 
 # Project Structure
-The project follows a standard Maven project structure and contains the following key directories:
+The project follows a standard playwright project structure and contains the following key directories:
 * tests/: test classes , test-related resources
 * logic/resources: Configuration files
 
