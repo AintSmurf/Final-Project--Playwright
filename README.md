@@ -14,7 +14,7 @@ Before you begin, ensure you have met the following requirements:
 * node.js installed
 
 # Project Structure
-The project follows a standard Maven project structure and contains the following key directories:
+The project follows a standard playwright project structure and contains the following key directories:
 * tests/: test classes , test-related resources
 * logic/resources: Configuration files
 
@@ -33,7 +33,7 @@ You can run the tests using the following methods:
 * run tests from the command line: 
 1) npm run test - ListReport in the console
 2) npm run allure - allureReport
-3) execure the generateAllureReport.sh with the command: source generateAllureReport.sh - allureReport
+3) execute the generateAllureReport.sh with the command: source generateAllureReport.sh - allureReport
 
 
 # Reporting
