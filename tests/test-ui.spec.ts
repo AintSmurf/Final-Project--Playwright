@@ -10,7 +10,7 @@ test.describe("Ui Tests", async () => {
     test.beforeEach('setUp the HomePage', async ({ homePage }) => {
         await homePage.goto()
     })
-    test("addd to wishlist - ui", async ({ homePage, productPage, wishlistPage }) => {
+    test("add to wishlist - ui", async ({ homePage, productPage, wishlistPage }) => {
         await homePage.hoverOverCategory(Category.WOMEN)
         await homePage.subCategorySelector(WomenSubCategory.WOMEN_PANTS, PANTS.JEANS)
         await productPage.filterBy(FilterBy.COLOR)
