@@ -1,6 +1,6 @@
 import { Locator, Page } from "playwright/test";
 import { BasePage } from "./base-page";
-import * as uc from "../../infra/resources/user-cred.json"
+import * as uc from "../../infra/resources/user-login.json"
 const BASE_URL = uc.BASE_URL;
 
 
