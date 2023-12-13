@@ -11,6 +11,12 @@ export class ApiService {
         return res;
     };
 
+    get = async <T>(url: string): Promise<APIResponse> => {
+        const context = await request.newContext();
+        const res = await context.get(url);
+        return res;
+    }
+
 
 
 

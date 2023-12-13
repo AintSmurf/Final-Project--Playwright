@@ -12,6 +12,8 @@ test.describe("full flow tests - e2e ", () => {
 
     })
     test('validate user logged in', async ({ httpHelper, homePage }) => {
+        await httpHelper.clearCookies()
+        await homePage.pause()
         const profileName = await homePage.getProfileName()
         expect(await httpHelper.getUserProfileName()).toContain(profileName)
     })
@@ -28,5 +30,10 @@ test.describe("full flow tests - e2e ", () => {
         await homePage.navigateToCartPage()
         let name = await cartPage.getItemNameFromCartByIndex(0)
         expect(await httpHelper.verifyItemExistsInCart(name)).toBeTruthy()
+    })
+    test('validate creditCard dosent exists', async ({ httpHelper, creditPage, homePage }) => {
+        const res: string | null = await httpHelper.getCardWarning()
+        await homePage.NavigateToCreditCardPage()
+        expect(await creditPage.getWarningText()).toBe(res)
     })
 })

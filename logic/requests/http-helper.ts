@@ -14,6 +14,7 @@ import { getItemDetails } from "./interface/item-details-req"
 import { ItemDetailsRes, ItemP, Color } from "../response/interface/item-details-res"
 import { WishListRes, ItemW } from "../response/interface/wishlist-data-res"
 import { UserDetails } from "../response/interface/user-details-res"
+import { CardPageResponse } from "../response/interface/card-page-res"
 
 const api = new ApiService()
 const LOGIN_URL = uc.LOGIN_URL
@@ -25,12 +26,20 @@ const REMOVE_PRODUCT_CART = uc.REMOVE_PRODUCT_CART
 const USER_INFO = uc.USER_INFO
 const LIST_OF_ITEMS = uc.LIST_OF_ITEMS
 const USER_DETAILS = uc.USER_DETAILS
+const CARDPAYMENTURL = uc.CARDPAYMENTURL
 
 export class HttpHelper extends BasePage {
     private wishList: string[] = [];
 
     constructor(page: Page) {
         super(page)
+    }
+    clearCookies = async () => {
+        await this.page.evaluate(() => {
+            localStorage.clear();
+            sessionStorage.clear();
+        });
+        await this.page.context().clearCookies();
     }
 
     login = async () => {
@@ -136,5 +145,10 @@ export class HttpHelper extends BasePage {
         const res: APIResponse = await api.post(USER_DETAILS)
         const ds: UserDetails = await res.json()
         return ds.data.customer.firstname
+    }
+    getCardWarning = async (): Promise<string | null> => {
+        const res: APIResponse = await api.get(CARDPAYMENTURL)
+        const ds: CardPageResponse = await res.json()
+        return ds.content.warning_title
     }
 }

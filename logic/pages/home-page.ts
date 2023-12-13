@@ -12,6 +12,11 @@ export class HomePage extends BasePage {
     private cartOptions: Locator
     private cartButton: Locator
     private profileName: Locator
+    private searchButton: Locator
+    private searchInput: Locator
+    private itemNameResults: Locator
+    private profile: Locator
+    private creditCardPageLink: Locator
 
     constructor(page: Page) {
         super(page)
@@ -19,6 +24,11 @@ export class HomePage extends BasePage {
         this.cartOptions = this.page.locator("//a[@data-test-id='qa-link-minicart']")
         this.cartButton = this.page.locator("//a[@data-test-id='qa-minicart-cart-button']")
         this.profileName = this.page.locator('//span[@class="profile-button-new-menu-underline_1fv_"]')
+        this.searchButton = this.page.locator('//button[@data-test-id="qa-header-search-button"]')
+        this.searchInput = this.page.locator('//input[@data-test-id="qa-search-box-input"]')
+        this.itemNameResults = this.page.locator("//a[@class='tx-link-a title_3ZxJ roboto-font_h7Lu tx-link_29YD underline-hover_3GkV']")
+        this.profile = this.page.locator('//span[@class="greet_Yfio profile-button-new-menu_2voE"]')
+        this.creditCardPageLink = this.page.locator("//a[text() = 'אמצעי התשלום שלי']")
     }
 
     goto = async (): Promise<void> => {
@@ -58,6 +68,16 @@ export class HomePage extends BasePage {
     getProfileName = async (): Promise<string | null> => {
         return await this.profileName.textContent()
     }
-
-
+    search = async (item: string): Promise<void> => {
+        await this.searchButton.click()
+        await this.searchInput.fill(item)
+        await this.page.keyboard.press('Enter')
+    }
+    getResultItems = async (): Promise<string | null> => {
+        return await this.itemNameResults.nth(1).textContent();
+    }
+    NavigateToCreditCardPage = async () => {
+        await this.profile.click()
+        await this.creditCardPageLink.click()
+    }
 }
