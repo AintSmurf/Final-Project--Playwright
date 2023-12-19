@@ -12,8 +12,6 @@ test.describe("full flow tests - e2e ", () => {
 
     })
     test('validate user logged in', async ({ httpHelper, homePage }) => {
-        await httpHelper.clearCookies()
-        await homePage.pause()
         const profileName = await homePage.getProfileName()
         expect(await httpHelper.getUserProfileName()).toContain(profileName)
     })
